@@ -47,8 +47,9 @@ body {
 
 .brand-logo {
     display: block;
-    height: 32px;
+    height: 120px; /* Adjusted height to preserve high-fidelity details of the emblem */
     width: auto;
+    object-fit: contain;
 }
 
 /* Typography & Labels */
