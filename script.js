@@ -125,4 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
         feedback.textContent = 'Submission mechanism is not yet active. Visual layer only.';
         feedback.classList.remove('hidden');
     });
+    // Target your newly provisioned secure domain:
+const workerUrl = "https://secure.thisiskinglis.com";
 });
