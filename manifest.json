@@ -1,12 +1,12 @@
 {
-  "name": "KINGLIS Evidence Submission",
+  "name": "KINGLIS Evidence",
   "short_name": "KINGLIS",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0a0c",
   "theme_color": "#0a0a0c",
   "icons": [
-    { "src": "/assets/KINGLIS-LOGO.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/assets/KINGLIS-LOGO.png", "sizes": "512x512", "type": "image/png" }
+    { "src": "/assets/KINGLIS.ico", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/assets/KINGLIS.ico", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ]
 }
