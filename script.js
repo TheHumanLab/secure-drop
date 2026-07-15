@@ -7,10 +7,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const queueCount = document.getElementById('queue-count');
     const submitBtn = document.getElementById('submit-btn');
     const feedback = document.getElementById('system-feedback');
+    const clientNameInput = document.getElementById('client-name');
+    const clientError = document.getElementById('client-error');
 
     let fileList = [];
 
-    // Drag-and-drop Events
+    function isReadyToSubmit() {
+        return fileList.length > 0 && clientNameInput && clientNameInput.value.trim().length > 0;
+    }
+
     ['dragenter', 'dragover'].forEach(eventName => {
         dropZone.addEventListener(eventName, (e) => {
             e.preventDefault(); e.stopPropagation();
@@ -92,10 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
         fileQueue.innerHTML = '';
         if (fileList.length === 0) {
             queueContainer.classList.add('hidden');
-            submitBtn.disabled = true; return;
+            submitBtn.disabled = true;
+            return;
         }
         queueContainer.classList.remove('hidden');
-        submitBtn.disabled = false;
+        submitBtn.disabled =!isReadyToSubmit();
         queueCount.textContent = `${fileList.length} item(s) ready`;
         fileList.forEach((item, index) => {
             const row = document.createElement('div'); row.className = 'file-row';
@@ -109,12 +115,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    if (clientNameInput) {
+        clientNameInput.addEventListener('input', () => {
+            if (clientError) clientError.style.display = 'none';
+            submitBtn.disabled =!isReadyToSubmit();
+        });
+    }
+
     submitBtn.addEventListener('click', async () => {
+        const rawClient = clientNameInput? clientNameInput.value.trim() : "";
+        if (!rawClient) {
+            if (clientError) clientError.style.display = 'block';
+            if (clientNameInput) clientNameInput.focus();
+            return;
+        }
         if (fileList.length === 0) return;
         if (typeof JSZip === 'undefined') {
             feedback.textContent = "System Error: JSZip library not loaded. Refresh page.";
             feedback.classList.remove('hidden'); return;
         }
+
+        const client = rawClient.replace(/[^a-zA-Z0-9-_ ]/g,"").trim().replace(/\s+/g,"-");
+
         submitBtn.disabled = true;
         submitBtn.textContent = "Compressing files...";
         feedback.textContent = "Generating ZIP archive...";
@@ -128,8 +150,8 @@ document.addEventListener('DOMContentLoaded', () => {
             feedback.textContent = "Transmitting secure package to KINGLIS server...";
             submitBtn.textContent = "Uploading...";
 
-            // FIXED: Must point to SILENT worker, NOT admin.
-            const workerUrl = "https://odd-smoke-ec2b.thisistrinary.workers.dev";
+            const workerBase = "https://odd-smoke-ec2b.thisistrinary.workers.dev";
+            const workerUrl = `${workerBase}?client=${encodeURIComponent(client)}`;
 
             const uploadResponse = await fetch(workerUrl, {
                 method: "POST",
@@ -139,13 +161,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (uploadResponse.ok) {
                 feedback.textContent = "Upload complete. Secure package received.";
-                fileList = []; updateQueueUI();
+                fileList = [];
+                updateQueueUI();
             } else {
                 const errText = await uploadResponse.text();
                 throw new Error(`Server rejected upload (${uploadResponse.status}): ${errText}`);
             }
             submitBtn.textContent = "Submit files";
-            submitBtn.disabled = false;
+            submitBtn.disabled = true; // stays disabled until new files + name
         } catch (err) {
             feedback.textContent = `Transmission Failure: ${err.message}`;
             submitBtn.textContent = "Submit files";
