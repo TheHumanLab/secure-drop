@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KINGLIS | Evidence Submission</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- JSZip must be loaded before script.js -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0a0a0c">
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 </head>
 <body>
-
     <main class="viewport-container">
         <header class="system-header">
             <div class="logo-wrapper">
@@ -21,7 +21,7 @@
             <div class="meta-label">SECURE SUBMISSION</div>
             <h1 class="main-heading">Submit material</h1>
             <p class="supporting-text">Add the files provided for review.</p>
-            
+
             <div style="margin:16px 0 20px">
               <label for="client-name" style="display:block;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#8b8d98;margin-bottom:8px">Company Name *</label>
               <input id="client-name" type="text" placeholder="e.g. KXSZ Corp" required
@@ -38,16 +38,15 @@
             </div>
 
             <div id="queue-container" class="queue-container hidden">
-                <div class="queue-header">
-                    <span>File Queue</span>
-                    <span id="queue-count">0 files</span>
-                </div>
+                <div class="queue-header"><span>File Queue</span><span id="queue-count">0 files</span></div>
                 <div id="file-queue" class="file-queue"></div>
             </div>
 
             <div class="action-container">
                 <button type="button" id="submit-btn" class="primary-button" disabled>Submit</button>
                 <div id="system-feedback" class="system-feedback hidden"></div>
+                <!-- NEW: 1-click desktop shortcut, no cert needed -->
+                <button type="button" id="shortcut-btn" style="margin-top:12px;background:transparent;border:1px solid #2a2a32;color:#8b8d98;padding:10px 16px;border-radius:10px;width:100%;cursor:pointer">Add KINGLIS to Desktop</button>
             </div>
         </section>
 
@@ -58,5 +57,17 @@
     </main>
 
     <script src="script.js"></script>
+    <script>
+      // Desktop.url shortcut download
+      document.getElementById('shortcut-btn')?.addEventListener('click', () => {
+        const content = "[InternetShortcut]\r\nURL=https://secure.thisiskinglis.com\r\nIconFile=https://secure.thisiskinglis.com/assets/KINGLIS-LOGO.png\r\nIconIndex=0\r\n";
+        const blob = new Blob([content], {type: 'application/octet-stream'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'KINGLIS Evidence Submission.url';
+        a.click();
+        URL.revokeObjectURL(a.href);
+      });
+    </script>
 </body>
 </html>
