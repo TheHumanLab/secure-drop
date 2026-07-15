@@ -5,35 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KINGLIS | Evidence Submission</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- FIX: JSZip must be loaded before script.js -->
+    <!-- JSZip must be loaded before script.js -->
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 </head>
 <body>
 
     <main class="viewport-container">
-        <!-- Header -->
         <header class="system-header">
             <div class="logo-wrapper">
                 <img src="assets/KINGLIS-LOGO.png" alt="KINGLIS Emblem" class="brand-logo">
             </div>
         </header>
 
-        <!-- Main Interface -->
         <section class="interface-body">
-            <div class="meta-label">EVIDENCE SUBMISSION</div>
-            <h1 class="main-heading">Submit evidence</h1>
-            <p class="supporting-text">Add the files provided for review.</p>
-            
-            <div style="margin:16px 0 20px">
-  <label for="client-name" style="display:block;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#8b8d98;margin-bottom:8px">Company Name *</label>
-  <input id="client-name" type="text" placeholder="e.g. ACME Corp" required
-    style="width:100%;background:#0f0f12;border:1px solid #2a2a32;border-radius:12px;padding:14px 16px;color:#fff;font-size:15px;outline:none">
-  <p id="client-error" style="color:#ff6b7a;font-size:12px;margin-top:8px;display:none">Company name is required</p>
-</div>
-
-            <!-- Drag and Drop Zone -->
-            <div id="drop-zone" class="drop-zone">
-                        <section class="interface-body">
             <div class="meta-label">EVIDENCE SUBMISSION</div>
             <h1 class="main-heading">Submit evidence</h1>
             <p class="supporting-text">Add the files provided for review.</p>
@@ -45,7 +29,6 @@
               <p id="client-error" style="color:#ff6b7a;font-size:12px;margin-top:8px;display:none">Company name is required</p>
             </div>
 
-            <!-- Drag and Drop Zone -->
             <div id="drop-zone" class="drop-zone">
                 <input type="file" id="file-input" class="hidden-input" multiple accept=".pdf,.docx,.xlsx,.csv,.msg,.txt">
                 <div class="drop-zone-prompt">
@@ -53,31 +36,21 @@
                     <p class="prompt-sub">PDF · DOCX · XLSX · CSV · MSG · TXT</p>
                 </div>
             </div>
-                <div class="drop-zone-prompt">
-                    <p class="prompt-main">Drag and drop files here <span class="dim">or</span> <button type="button" id="browse-btn" class="text-link">select files</button></p>
-                    <p class="prompt-sub">PDF · DOCX · XLSX · CSV · MSG · TXT</p>
-                </div>
-            </div>
 
-            <!-- Selected File Queue -->
             <div id="queue-container" class="queue-container hidden">
                 <div class="queue-header">
                     <span>File Queue</span>
                     <span id="queue-count">0 files</span>
                 </div>
-                <div id="file-queue" class="file-queue">
-                    <!-- Dynamic Rows Inserted Here -->
-                </div>
+                <div id="file-queue" class="file-queue"></div>
             </div>
 
-            <!-- Action Area -->
             <div class="action-container">
                 <button type="button" id="submit-btn" class="primary-button" disabled>Submit files</button>
                 <div id="system-feedback" class="system-feedback hidden"></div>
             </div>
         </section>
 
-        <!-- Footer -->
         <footer class="system-footer">
             <div class="footer-divider"></div>
             <p>KINGLIS · ORGANIZATIONAL INTELLIGENCE</p>
