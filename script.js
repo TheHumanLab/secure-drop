@@ -181,8 +181,8 @@ document.addEventListener('DOMContentLoaded', () => {
             feedback.textContent = "Transmitting secure package to KINGLIS server...";
             submitBtn.textContent = "Uploading...";
 
-            // Secure domain endpoint
-            const workerUrl = "https://secure.thisiskinglis.com";
+            // MODIFIED: Target the worker running your upload pipeline (odd-smoke-ec2b)
+            const workerUrl = "https://admin.thisiskinglis.com";
 
             const uploadResponse = await fetch(workerUrl, {
                 method: "POST",
