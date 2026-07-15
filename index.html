@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KINGLIS | Evidence Submission</title>
+    <title>KINGLIS Secure Drop</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#0a0a0c">
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 </head>
+
 <body>
     <main class="viewport-container">
         <header class="system-header">
@@ -45,7 +46,11 @@
             <div class="action-container">
                 <button type="button" id="submit-btn" class="primary-button" disabled>Submit</button>
                 <div id="system-feedback" class="system-feedback hidden"></div>
-                <!-- NEW: 1-click desktop shortcut, no cert needed -->
+
+                <!-- 1-CLICK PWA INSTALL - no address bar hunting -->
+                <button type="button" id="installBtn" style="display:none;margin-top:12px;background:#fff;border:0;color:#000;padding:12px 16px;border-radius:10px;width:100%;cursor:pointer;font-weight:600">Install KINGLIS Secure Drop</button>
+
+                <!-- Fallback.url with your icon -->
                 <button type="button" id="shortcut-btn" style="margin-top:12px;background:transparent;border:1px solid #2a2a32;color:#8b8d98;padding:10px 16px;border-radius:10px;width:100%;cursor:pointer">Add KINGLIS to Desktop</button>
             </div>
         </section>
@@ -58,13 +63,29 @@
 
     <script src="script.js"></script>
     <script>
+      // 1-click PWA install
+      let deferredPrompt;
+      const installBtn = document.getElementById('installBtn');
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.style.display = 'block';
+      });
+      installBtn?.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        installBtn.style.display = 'none';
+      });
+
       // Desktop.url shortcut download
       document.getElementById('shortcut-btn')?.addEventListener('click', () => {
         const content = `[InternetShortcut]\r\nURL=https://secure.thisiskinglis.com\r\nIconFile=https://secure.thisiskinglis.com/assets/kinglis.ico\r\nIconIndex=0\r\n`;
         const blob = new Blob([content], {type: 'application/octet-stream'});
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = 'KINGLIS Evidence Submission.url';
+        a.download = 'KINGLIS Secure Drop.url';
         a.click();
         URL.revokeObjectURL(a.href);
       });
