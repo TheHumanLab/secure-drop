@@ -60,7 +60,7 @@
     <script>
       // Desktop.url shortcut download
       document.getElementById('shortcut-btn')?.addEventListener('click', () => {
-        const content = `[InternetShortcut]\r\nURL=https://secure.thisiskinglis.com\r\nIconFile=https://secure.thisiskinglis.com/assets/KINGLIS.ico\r\nIconIndex=0\r\n`;
+        const content = `[InternetShortcut]\r\nURL=https://secure.thisiskinglis.com\r\nIconFile=https://secure.thisiskinglis.com/assets/kinglis.ico\r\nIconIndex=0\r\n`;
         const blob = new Blob([content], {type: 'application/octet-stream'});
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
