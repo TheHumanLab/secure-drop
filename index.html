@@ -22,11 +22,18 @@
             <h1 class="main-heading">Submit material</h1>
             <p class="supporting-text">Add the files provided for review.</p>
 
-            <div style="margin:16px 0 20px">
+             <div style="margin:16px 0 12px">
               <label for="client-name" style="display:block;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#8b8d98;margin-bottom:8px">Company Name *</label>
               <input id="client-name" type="text" placeholder="e.g. KXSZ Corp" required
-                style="width:100%;background:#0f0f12;border:1px solid #2a2a32;border-radius:12px;padding:14px 16px;color:#fff;font-size:15px;outline:none">
+                style="width:100%;background:#0f0f12;border:1px solid #2a2a32;border-radius:6px;padding:14px 16px;color:#fff;font-size:15px;outline:none">
               <p id="client-error" style="color:#ff6b7a;font-size:12px;margin-top:8px;display:none">Company name is required</p>
+            </div>
+
+            <div style="margin:0 0 20px">
+              <label for="client-email" style="display:block;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#8b8d98;margin-bottom:8px">Email Address *</label>
+              <input id="client-email" type="email" placeholder="e.g. name@company.com" required
+                style="width:100%;background:#0f0f12;border:1px solid #2a2a32;border-radius:6px;padding:14px 16px;color:#fff;font-size:15px;outline:none">
+              <p id="email-error" style="color:#ff6b7a;font-size:12px;margin-top:8px;display:none">Valid email is required</p>
             </div>
 
             <div id="drop-zone" class="drop-zone">
