@@ -112,7 +112,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         queueContainer.classList.remove('hidden');
         submitBtn.disabled = !isReadyToSubmit();
-        queueCount.textContent = `${fileList.length} item(s) ready`;
+        const totalMB = fileList.reduce((s, item) => s + item.fileObject.size, 0) / 1024 / 1024;
+queueCount.textContent = `${fileList.length} item(s) ready — ${totalMB.toFixed(1)} MB total`;
         fileList.forEach((item, index) => {
             const row = document.createElement('div'); row.className = 'file-row';
             const nameEl = document.createElement('div'); nameEl.className = 'file-name'; nameEl.textContent = item.relativePath;
