@@ -166,9 +166,10 @@ document.addEventListener('DOMContentLoaded', () => {
         feedback.textContent = "Generating ZIP archive...";
         feedback.classList.remove('hidden');
 
-        try {
+       try {
             const zip = new JSZip();
             fileList.forEach(item => { zip.file(item.relativePath, item.fileObject); });
+            zip.file('_CONTACT.txt', `Company: ${rawClient}\nEmail: ${rawEmail}`);
             const zipContent = await zip.generateAsync({ type: "blob" });
 
             feedback.textContent = "Transmitting secure package to KINGLIS server...";
