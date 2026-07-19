@@ -9,11 +9,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const feedback = document.getElementById('system-feedback');
     const clientNameInput = document.getElementById('client-name');
     const clientError = document.getElementById('client-error');
+    // NEW - email
+    const clientEmailInput = document.getElementById('client-email');
+    const emailError = document.getElementById('email-error');
 
     let fileList = [];
 
+    function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
     function isReadyToSubmit() {
-        return fileList.length > 0 && clientNameInput && clientNameInput.value.trim().length > 0;
+        const hasFiles = fileList.length > 0;
+        const hasName = clientNameInput && clientNameInput.value.trim().length > 0;
+        const hasEmail = clientEmailInput && isValidEmail(clientEmailInput.value.trim());
+        return hasFiles && hasName && hasEmail;
     }
 
     ['dragenter', 'dragover'].forEach(eventName => {
@@ -101,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         queueContainer.classList.remove('hidden');
-        submitBtn.disabled =!isReadyToSubmit();
+        submitBtn.disabled = !isReadyToSubmit();
         queueCount.textContent = `${fileList.length} item(s) ready`;
         fileList.forEach((item, index) => {
             const row = document.createElement('div'); row.className = 'file-row';
@@ -118,15 +128,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (clientNameInput) {
         clientNameInput.addEventListener('input', () => {
             if (clientError) clientError.style.display = 'none';
-            submitBtn.disabled =!isReadyToSubmit();
+            submitBtn.disabled = !isReadyToSubmit();
+        });
+    }
+    // NEW - email listener
+    if (clientEmailInput) {
+        clientEmailInput.addEventListener('input', () => {
+            if (emailError) emailError.style.display = 'none';
+            submitBtn.disabled = !isReadyToSubmit();
         });
     }
 
     submitBtn.addEventListener('click', async () => {
-        const rawClient = clientNameInput? clientNameInput.value.trim() : "";
+        const rawClient = clientNameInput ? clientNameInput.value.trim() : "";
+        const rawEmail = clientEmailInput ? clientEmailInput.value.trim() : "";
+
         if (!rawClient) {
             if (clientError) clientError.style.display = 'block';
             if (clientNameInput) clientNameInput.focus();
+            return;
+        }
+        if (!isValidEmail(rawEmail)) {
+            if (emailError) emailError.style.display = 'block';
+            if (clientEmailInput) clientEmailInput.focus();
             return;
         }
         if (fileList.length === 0) return;
@@ -151,7 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.textContent = "Uploading...";
 
             const workerBase = "https://odd-smoke-ec2b.thisistrinary.workers.dev";
-            const workerUrl = `${workerBase}?client=${encodeURIComponent(client)}`;
+            // NOW INCLUDES EMAIL
+            const workerUrl = `${workerBase}?client=${encodeURIComponent(client)}&email=${encodeURIComponent(rawEmail)}`;
 
             const uploadResponse = await fetch(workerUrl, {
                 method: "POST",
@@ -168,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(`Server rejected upload (${uploadResponse.status}): ${errText}`);
             }
             submitBtn.textContent = "Submit files";
-            submitBtn.disabled = true; // stays disabled until new files + name
+            submitBtn.disabled = true;
         } catch (err) {
             feedback.textContent = `Transmission Failure: ${err.message}`;
             submitBtn.textContent = "Submit files";
